@@ -1,12 +1,26 @@
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
-import scrapy
+from scrapy import Item, Field
 
 
-class ExcursionistItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class ExcursionistItem(Item):
+    """
+    The ExcursionistItem class defines the data model for scraped travel offers from the different travel pages supported by the Excursionist project.
+
+    Attributes:
+        country (Field): Destination country of the travel offer.
+        city (Field): Destination city of the offer.
+        price (Field): Price of the offer in US dollars.
+        timestamp (Field): Timestamp of when the offer was scraped.
+        start_date (Field): Start date of the travel.
+        end_date (Field): End date of the travel.
+        travel_page (Field): Name of the travel page where the offer was scraped.
+        url (Field): URL of the offer page, or in some cases, the URL of the offers page.
+    """
+
+    country = Field()
+    city = Field()
+    price = Field()
+    timestamp = Field()
+    start_date = Field()
+    end_date = Field()
+    travel_page = Field()
+    url = Field()

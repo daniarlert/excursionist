@@ -6,6 +6,7 @@ class ExcursionistItem(Item):
     The ExcursionistItem class defines the data model for scraped travel offers from the different travel pages supported by the Excursionist project.
 
     Attributes:
+        origin (Field): Origin city of the travel offer.
         country (Field): Destination country of the travel offer.
         city (Field): Destination city of the offer.
         price (Field): Price of the offer in US dollars.
@@ -16,6 +17,7 @@ class ExcursionistItem(Item):
         url (Field): URL of the offer page, or in some cases, the URL of the offers page.
     """
 
+    origin = Field()
     country = Field()
     city = Field()
     price = Field()

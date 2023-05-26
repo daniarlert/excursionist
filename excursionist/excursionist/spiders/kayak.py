@@ -10,7 +10,9 @@ from scrapy_playwright.page import PageMethod
 from excursionist.items import ExcursionistItem
 
 
-def gen_url(origin, destination, start_date, end_date):
+def gen_url(start_date, end_date):
+    origin = os.getenv("ORIGIN_CITY", "ALC")
+    destination = os.getenv("DESTINATION_CITY", "anywhere")
     return f"https://www.kayak.com/explore/{origin}-{destination}/{start_date.replace('-', '')},{end_date.replace('-', '')}"
 
 
@@ -21,12 +23,10 @@ class KayakSpider(Spider):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.start_date = os.getenv("START_DATE", datetime.now().strftime("%Y-%m-%d"))
-        self.end_date = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+        self.end_date = os.getenv("END_DATE", (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d"))
 
     def start_requests(self):
         url = gen_url(
-            os.getenv("ORIGIN_CITY", "ALC"),
-            os.getenv("DESTINATION_CITY", "anywhere"),
             self.start_date,
             self.end_date,
         )
@@ -53,6 +53,7 @@ class KayakSpider(Spider):
                 for offer in response.css("div.Explore-GridViewItem"):
                     item = ExcursionistItem()
 
+                    item["origin"] = os.getenv("ORIGIN_CITY", "ALC")
                     item["country"] = offer.css("div.Country__Name::text").get()
                     item["city"] = offer.css("div.City__Name::text").get()
                     item["price"] = offer.css("div.City__Name + div::text").get()

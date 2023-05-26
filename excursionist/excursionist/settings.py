@@ -68,6 +68,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     "excursionist.pipelines.DuplicatesPipeline": 100,
+    "excursionist.pipelines.SaveToSqlitePipeline": 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -1,5 +1,4 @@
 # Scrapy settings for excursionist project
-
 BOT_NAME = "excursionist"
 SPIDER_MODULES = ["excursionist.spiders"]
 NEWSPIDER_MODULE = "excursionist.spiders"
@@ -45,7 +44,7 @@ DOWNLOAD_HANDLERS = {
     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
 }
 
-PLAYWRIGHT_BROWSER_TYPE = "chromium"
+PLAYWRIGHT_BROWSER_TYPE = "firefox"
 
 PLAYWRIGHT_LAUNCH_OPTIONS = {
     "headless": False,
@@ -67,9 +66,9 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    "excursionist.pipelines.ExcursionistPipeline": 300,
-# }
+ITEM_PIPELINES = {
+    "excursionist.pipelines.DuplicatesPipeline": 100,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

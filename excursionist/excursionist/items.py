@@ -1,9 +1,9 @@
 from scrapy import Item, Field
 
 
-class ExcursionistItem(Item):
+class OfferItem(Item):
     """
-    The ExcursionistItem class defines the data model for scraped travel offers from the different travel pages supported by the Excursionist project.
+    The OfferItem class defines the data model for scraped travel offers from the different travel pages supported by the Excursionist project.
 
     Attributes:
         origin (Field): Origin city of the travel offer.

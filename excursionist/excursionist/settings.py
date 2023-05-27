@@ -67,7 +67,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    "excursionist.pipelines.DuplicatesPipeline": 100,
+    "excursionist.pipelines.CleanPipeline": 100,
     "excursionist.pipelines.SaveToSqlitePipeline": 200,
 }
 

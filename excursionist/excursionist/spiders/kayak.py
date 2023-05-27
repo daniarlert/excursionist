@@ -7,7 +7,7 @@ load_dotenv()
 from scrapy import Spider, Request
 from scrapy_playwright.page import PageMethod
 
-from excursionist.items import ExcursionistItem
+from excursionist.items import OfferItem
 
 
 def gen_url(start_date, end_date):
@@ -23,7 +23,9 @@ class KayakSpider(Spider):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.start_date = os.getenv("START_DATE", datetime.now().strftime("%Y-%m-%d"))
-        self.end_date = os.getenv("END_DATE", (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d"))
+        self.end_date = os.getenv(
+            "END_DATE", (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+        )
 
     def start_requests(self):
         url = gen_url(
@@ -51,7 +53,7 @@ class KayakSpider(Spider):
             is_hidden = await load_more_button.is_hidden()
             if is_hidden:
                 for offer in response.css("div.Explore-GridViewItem"):
-                    item = ExcursionistItem()
+                    item = OfferItem()
 
                     item["origin"] = os.getenv("ORIGIN_CITY", "ALC")
                     item["country"] = offer.css("div.Country__Name::text").get()

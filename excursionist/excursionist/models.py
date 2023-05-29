@@ -15,7 +15,7 @@ class OfferModel(Base):
     price: Mapped[float] = mapped_column(nullable=False)
     timestamp: Mapped[str] = mapped_column(nullable=False)
     start_date: Mapped[str] = mapped_column(nullable=False)
-    end_date: Mapped[str] = mapped_column(nullable=False)
+    end_date: Mapped[str] = mapped_column(nullable=True)
     travel_page: Mapped[str] = mapped_column(nullable=False)
     url: Mapped[str] = mapped_column(nullable=False)
 

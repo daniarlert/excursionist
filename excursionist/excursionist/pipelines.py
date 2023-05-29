@@ -1,3 +1,4 @@
+import re
 from itemadapter import ItemAdapter
 
 from excursionist.db import create_tables, connect, get_session
@@ -7,12 +8,21 @@ from excursionist.models import OfferModel
 class CleanPipeline:
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
-        adapter["price"] = self.clean_price(adapter["price"])
+        adapter["price"] = self.clean_price(adapter["price"], adapter["travel_page"])
         return item
 
     @staticmethod
-    def clean_price(price):
-        return price.replace("from $", "")
+    def clean_price(price, travel_page):
+        if travel_page == "kayak":
+            return price.replace("from $", "")
+        elif travel_page == "skiplagged":
+            pattern = r">([^<>]+)<"
+            match = re.search(pattern, price)
+            if match:
+                price = match.group(1).strip().replace("€", "")
+                return price
+            else:
+                return price
 
 
 class SaveToSqlitePipeline:

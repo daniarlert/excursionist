@@ -1,13 +1,12 @@
 import os
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-
-load_dotenv()
-
 from scrapy import Spider, Request
 from scrapy_playwright.page import PageMethod
 
 from excursionist.items import OfferItem
+
+load_dotenv()
 
 
 def gen_url(start_date, end_date):

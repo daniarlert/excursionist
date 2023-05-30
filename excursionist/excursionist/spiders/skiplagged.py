@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from dotenv import load_dotenv
 from scrapy import Spider, Request
 from scrapy_playwright.page import PageMethod
@@ -9,13 +9,15 @@ from excursionist.items import OfferItem
 load_dotenv()
 
 
-def gen_url(start_date):
-    origin = os.getenv("ORIGIN_CITY", "ALC")
-    destination = os.getenv("DESTINATION_CITY", "anywhere")
-    if destination == "anywhere":
-        return f"https://skiplagged.com/flights/{origin}/{start_date}"
+def gen_url(
+    origin_city: str,
+    destination_city: str | None,
+    start_date: str,
+) -> str:
+    if not destination_city:
+        return f"https://skiplagged.com/flights/{origin_city}/{start_date}"
     else:
-        return f"https://skiplagged.com/flights/{origin}/{destination}/{start_date}"
+        return f"https://skiplagged.com/flights/{origin_city}/{destination_city}/{start_date}"
 
 
 class SkiplaggedSpider(Spider):
@@ -24,12 +26,19 @@ class SkiplaggedSpider(Spider):
 
     def __init__(self, name=None, **kwargs):
         super().__init__(name, **kwargs)
-        self.start_date = os.getenv(
-            "START_DATE", (datetime.now() + timedelta(days=23)).strftime("%Y-%m-%d")
-        )
+        self.origin_city = os.getenv("ORIGIN_CITY")
+        self.destination_city = os.getenv("DESTINATION_CITY")
+        self.start_date = os.getenv("START_DATE")
+
+        if not self.origin_city:
+            raise ValueError("ORIGIN_CITY is not set.")
+        if not self.start_date:
+            raise ValueError("START_DATE is not set.")
 
     def start_requests(self):
         url = gen_url(
+            self.origin_city,
+            self.destination_city,
             self.start_date,
         )
 
@@ -49,6 +58,8 @@ class SkiplaggedSpider(Spider):
         page = response.meta["playwright_page"]
 
         await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+
+        # Update the response body with the new HTML.
         updated_html = await page.content()
         response = response.replace(body=updated_html)
 

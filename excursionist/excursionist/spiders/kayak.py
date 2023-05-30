@@ -9,10 +9,16 @@ from excursionist.items import OfferItem
 load_dotenv()
 
 
-def gen_url(start_date, end_date):
-    origin = os.getenv("ORIGIN_CITY", "ALC")
-    destination = os.getenv("DESTINATION_CITY", "anywhere")
-    return f"https://www.kayak.com/explore/{origin}-{destination}/{start_date.replace('-', '')},{end_date.replace('-', '')}"
+def gen_url(
+    origin_city: str,
+    destination_city: str | None,
+    start_date: str,
+    end_date: str | None,
+) -> str:
+    if not destination_city:
+        return f"https://www.kayak.com/explore/{origin_city}-{destination_city}/{start_date.replace('-', '')},{end_date.replace('-', '')}"
+    else:
+        return f"https://www.kayak.com/explore/{origin_city}-{destination_city}/{start_date.replace('-', '')},{end_date.replace('-', '')}"
 
 
 class KayakSpider(Spider):
@@ -21,13 +27,22 @@ class KayakSpider(Spider):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.start_date = os.getenv("START_DATE", datetime.now().strftime("%Y-%m-%d"))
-        self.end_date = os.getenv(
-            "END_DATE", (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
-        )
+        self.origin_city = os.getenv("ORIGIN_CITY")
+        self.destination_city = os.getenv("DESTINATION_CITY")
+        self.start_date = os.getenv("START_DATE")
+        self.end_date = os.getenv("END_DATE")
+
+        if not self.origin_city:
+            raise ValueError("ORIGIN_CITY is not set.")
+        if not self.start_date:
+            raise ValueError("START_DATE is not set.")
+        if not self.end_date:
+            raise ValueError("END_DATE is not set.")
 
     def start_requests(self):
         url = gen_url(
+            self.origin_city,
+            self.destination_city,
             self.start_date,
             self.end_date,
         )

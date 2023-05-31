@@ -1,10 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+from excursionist.models import Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
-
-from excursionist.models import Base
 
 load_dotenv()
 

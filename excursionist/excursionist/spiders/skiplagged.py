@@ -1,10 +1,10 @@
 import os
 from datetime import datetime
-from dotenv import load_dotenv
-from scrapy import Spider, Request
-from scrapy_playwright.page import PageMethod
 
+from dotenv import load_dotenv
 from excursionist.items import OfferItem
+from scrapy import Request, Spider
+from scrapy_playwright.page import PageMethod
 
 load_dotenv()
 
@@ -21,13 +21,12 @@ def gen_url(
 
 
 class SkiplaggedSpider(Spider):
-    name = "skiplagged"
+    name = "skiplagged-explore"
     allowed_domains = ["skiplagged.com"]
 
     def __init__(self, name=None, **kwargs):
         super().__init__(name, **kwargs)
         self.origin_city = os.getenv("ORIGIN_CITY")
-        self.destination_city = os.getenv("DESTINATION_CITY")
         self.start_date = os.getenv("START_DATE")
 
         if not self.origin_city:
@@ -38,7 +37,7 @@ class SkiplaggedSpider(Spider):
     def start_requests(self):
         url = gen_url(
             self.origin_city,
-            self.destination_city,
+            None,
             self.start_date,
         )
 

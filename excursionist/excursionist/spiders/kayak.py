@@ -1,10 +1,10 @@
 import os
 from datetime import datetime, timedelta
-from dotenv import load_dotenv
-from scrapy import Spider, Request
-from scrapy_playwright.page import PageMethod
 
+from dotenv import load_dotenv
 from excursionist.items import OfferItem
+from scrapy import Request, Spider
+from scrapy_playwright.page import PageMethod
 
 load_dotenv()
 
@@ -13,22 +13,21 @@ def gen_url(
     origin_city: str,
     destination_city: str | None,
     start_date: str,
-    end_date: str | None,
+    end_date: str,
 ) -> str:
     if not destination_city:
-        return f"https://www.kayak.com/explore/{origin_city}-{destination_city}/{start_date.replace('-', '')},{end_date.replace('-', '')}"
+        return f"https://www.kayak.com/explore/{origin_city}-anywhere/{start_date.replace('-', '')},{end_date.replace('-', '')}"
     else:
-        return f"https://www.kayak.com/explore/{origin_city}-{destination_city}/{start_date.replace('-', '')},{end_date.replace('-', '')}"
+        return f"https://www.kayak.com/flights/{origin_city}-{destination_city}/{start_date}/{end_date}/?sort=bestflight_a"
 
 
 class KayakSpider(Spider):
-    name = "kayak"
+    name = "kayak-explore"
     allowed_domains = ["www.kayak.com"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.origin_city = os.getenv("ORIGIN_CITY")
-        self.destination_city = os.getenv("DESTINATION_CITY")
         self.start_date = os.getenv("START_DATE")
         self.end_date = os.getenv("END_DATE")
 
@@ -42,7 +41,7 @@ class KayakSpider(Spider):
     def start_requests(self):
         url = gen_url(
             self.origin_city,
-            self.destination_city,
+            None,
             self.start_date,
             self.end_date,
         )
@@ -53,7 +52,7 @@ class KayakSpider(Spider):
                 "playwright": True,
                 "playwright_include_page": True,
                 "playwright_page_methods": [
-                    PageMethod("wait_for_selector", 'button[id$="showMoreButton"]'),
+                    PageMethod("wait_for_selector", "div.Explore-GridViewItem"),
                 ],
                 "errback": self.errback,
             },
@@ -65,7 +64,8 @@ class KayakSpider(Spider):
         while True:
             load_more_button = await page.query_selector('button[id$="showMoreButton"]')
             is_hidden = await load_more_button.is_hidden()
-            if is_hidden:
+
+            if is_hidden or not load_more_button:
                 for offer in response.css("div.Explore-GridViewItem"):
                     item = OfferItem()
 

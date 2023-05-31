@@ -1,8 +1,8 @@
 import re
-from itemadapter import ItemAdapter
 
-from excursionist.db import create_tables, connect, get_session
+from excursionist.db import connect, create_tables, get_session
 from excursionist.models import OfferModel
+from itemadapter import ItemAdapter
 
 
 class CleanPipeline:

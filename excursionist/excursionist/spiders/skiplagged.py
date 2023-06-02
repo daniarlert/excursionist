@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 
 from dotenv import load_dotenv
 from excursionist.items import OfferItem
@@ -69,7 +68,6 @@ class SkiplaggedSpider(Spider):
             item["country"] = offer.css("span.skipsy-region::text").get()
             item["city"] = offer.css("h2.skipsy-city::text").get()
             item["price"] = offer.css("div.skipsy-cost").get()
-            item["timestamp"] = datetime.utcnow().isoformat()
             item["start_date"] = self.start_date
             item["travel_page"] = "skiplagged"
             item["url"] = f"https://skiplagged.com{offer.css('a::attr(href)').get()}"

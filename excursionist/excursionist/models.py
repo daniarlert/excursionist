@@ -11,21 +11,46 @@ class OfferModel(Base):
     __tablename__ = "offer"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    origin: Mapped[str] = mapped_column(nullable=False)
-    country: Mapped[str] = mapped_column(nullable=False)
-    city: Mapped[str] = mapped_column(nullable=False)
-    price: Mapped[float] = mapped_column(nullable=False)
+
+    origin_city: Mapped[str] = mapped_column()
+    origin_country: Mapped[str] = mapped_column()
+
+    destination_city: Mapped[str] = mapped_column()
+    destination_country: Mapped[str | None] = mapped_column()
+
+    travel_start_date: Mapped[str] = mapped_column()
+    travel_end_date: Mapped[str | None] = mapped_column()
+
+    depart_start_time: Mapped[str | None] = mapped_column()
+    depart_arrival_time: Mapped[str | None] = mapped_column()
+    depart_airline: Mapped[str | None] = mapped_column()
+    depart_stops: Mapped[int | None] = mapped_column()
+
+    return_start_time: Mapped[str | None] = mapped_column()
+    return_arrival_time: Mapped[str | None] = mapped_column()
+    return_airline: Mapped[str | None] = mapped_column()
+    return_stops: Mapped[int | None] = mapped_column()
+
+    price: Mapped[float] = mapped_column()
+    travel_page: Mapped[str] = mapped_column()
+    url: Mapped[str] = mapped_column()
+
     timestamp: Mapped[datetime] = mapped_column(
-        nullable=False,
         default=datetime.utcnow(),
     )
-    start_date: Mapped[str] = mapped_column(nullable=False)
-    end_date: Mapped[str] = mapped_column(nullable=True)
-    departure_time: Mapped[datetime] = mapped_column(nullable=True)
-    arrival_time: Mapped[datetime] = mapped_column(nullable=True)
-    travel_page: Mapped[str] = mapped_column(nullable=False)
-    url: Mapped[str] = mapped_column(nullable=False)
-    airline: Mapped[str] = mapped_column(nullable=True)
 
     def __repr__(self):
-        return f"<OfferModel(origin={self.origin}, country={self.country}, city={self.city}, price={self.price}, timestamp={self.timestamp}, start_date={self.start_date}, end_date={self.end_date}, departure_time={self.departure_time}, arrival_time={self.arrival_time}, travel_page={self.travel_page}, url={self.url}, airline={self.airline})>"
+        return f"""
+            Offer(
+                id={self.id},
+                origin_city={self.origin_city},
+                origin_country={self.origin_country},
+                destination_city={self.destination_city},
+                destination_country={self.destination_country},
+                travel_start_date={self.travel_start_date},
+                travel_end_date={self.travel_end_date},
+                price={self.price},
+                travel_page={self.travel_page},
+                url={self.url},
+            )
+        """

@@ -11,38 +11,38 @@ load_dotenv()
 def gen_url(
     origin_city: str,
     destination_city: str | None,
-    start_date: str,
-    end_date: str,
+    travel_start_date: str,
+    travel_end_date: str,
 ) -> str:
     if not destination_city:
-        return f"https://www.kayak.com/explore/{origin_city}-anywhere/{start_date.replace('-', '')},{end_date.replace('-', '')}"
+        return f"https://www.kayak.com/explore/{origin_city}-anywhere/{travel_start_date.replace('-', '')},{travel_end_date.replace('-', '')}"
     else:
-        return f"https://www.kayak.com/flights/{origin_city}-{destination_city}/{start_date}/{end_date}"
+        return f"https://www.kayak.com/flights/{origin_city}-{destination_city}/{travel_start_date}/{travel_end_date}"
 
 
-class KayakSpider(Spider):
+class KayakExploreSpider(Spider):
     name = "kayak-explore"
     allowed_domains = ["www.kayak.com"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.origin_city = os.getenv("ORIGIN_CITY")
-        self.start_date = os.getenv("START_DATE")
-        self.end_date = os.getenv("END_DATE")
+        self.travel_start_date = os.getenv("TRAVEL_START_DATE")
+        self.travel_end_date = os.getenv("TRAVEL_END_DATE")
 
         if not self.origin_city:
             raise ValueError("ORIGIN_CITY is not set.")
-        if not self.start_date:
-            raise ValueError("START_DATE is not set.")
-        if not self.end_date:
-            raise ValueError("END_DATE is not set.")
+        if not self.travel_start_date:
+            raise ValueError("TRAVEL_START_DATE is not set.")
+        if not self.travel_end_date:
+            raise ValueError("TRAVEL_END_DATE is not set.")
 
     def start_requests(self):
         url = gen_url(
             self.origin_city,
             None,
-            self.start_date,
-            self.end_date,
+            self.travel_start_date,
+            self.travel_end_date,
         )
 
         yield Request(
@@ -68,12 +68,14 @@ class KayakSpider(Spider):
                 for offer in response.css("div.Explore-GridViewItem"):
                     item = OfferItem()
 
-                    item["origin"] = os.getenv("ORIGIN_CITY", "ALC")
-                    item["country"] = offer.css("div.Country__Name::text").get()
-                    item["city"] = offer.css("div.City__Name::text").get()
+                    item["origin_city"] = os.getenv("ORIGIN_CITY")
+                    item["origin_country"] = offer.css("div.Country__Name::text").get()
+
+                    item["destination_city"] = offer.css("div.City__Name::text").get()
+
+                    item["travel_start_date"] = self.travel_start_date
+                    item["travel_end_date"] = self.travel_end_date
                     item["price"] = offer.css("div.City__Name + div::text").get()
-                    item["start_date"] = self.start_date
-                    item["end_date"] = self.end_date
                     item["travel_page"] = "kayak"
                     item["url"] = response.url
 
@@ -104,25 +106,25 @@ class KayakSpider(Spider):
         super().__init__(*args, **kwargs)
         self.origin_city = os.getenv("ORIGIN_CITY")
         self.destination_city = os.getenv("DESTINATION_CITY")
-        self.start_date = os.getenv("START_DATE")
-        self.end_date = os.getenv("END_DATE")
+        self.travel_start_date = os.getenv("TRAVEL_START_DATE")
+        self.travel_end_date = os.getenv("TRAVEL_END_DATE")
         self.max_requests = int(os.getenv("MAX_REQUESTS", 1))
 
         if not self.origin_city:
             raise ValueError("ORIGIN_CITY is not set.")
         if not self.destination_city:
             raise ValueError("DESTINATION_CITY is not set.")
-        if not self.start_date:
-            raise ValueError("START_DATE is not set.")
-        if not self.end_date:
-            raise ValueError("END_DATE is not set.")
+        if not self.travel_start_date:
+            raise ValueError("TRAVEL_START_DATE is not set.")
+        if not self.travel_end_date:
+            raise ValueError("TRAVEL_END_DATE is not set.")
 
     def start_requests(self):
         url = gen_url(
             self.origin_city,
             self.destination_city,
-            self.start_date,
-            self.end_date,
+            self.travel_start_date,
+            self.travel_end_date,
         )
 
         yield Request(

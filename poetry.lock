@@ -306,13 +306,13 @@ files = [
 
 [[package]]
 name = "commitizen"
-version = "3.2.2"
+version = "3.3.0"
 description = "Python commitizen client tool"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "commitizen-3.2.2-py3-none-any.whl", hash = "sha256:1d967de9d1dc3210947fdbe280b34ac184d83dbe35661f21463cf0305fe670ef"},
-    {file = "commitizen-3.2.2.tar.gz", hash = "sha256:62e06077e657ab6156baa8656a8d5e54db7c5c3f51feab6ea4d7b867ddeab325"},
+    {file = "commitizen-3.3.0-py3-none-any.whl", hash = "sha256:55a5e6dfb7b5815a0708532d63c22ef3433ac0d66a48d8f40a7f9ba7e56c8a2c"},
+    {file = "commitizen-3.3.0.tar.gz", hash = "sha256:b1d81366c9e6a3f426dbf72a34de043d826045a382aa8cd9bc7d9289e84e66a8"},
 ]
 
 [package.dependencies]
@@ -415,13 +415,13 @@ files = [
 
 [[package]]
 name = "filelock"
-version = "3.12.1"
+version = "3.12.2"
 description = "A platform independent file lock."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "filelock-3.12.1-py3-none-any.whl", hash = "sha256:42f1e4ff2b497311213d61ad7aac5fed9050608e5309573f101eefa94143134a"},
-    {file = "filelock-3.12.1.tar.gz", hash = "sha256:82b1f7da46f0ae42abf1bc78e548667f484ac59d2bcec38c713cee7e2eb51e83"},
+    {file = "filelock-3.12.2-py3-none-any.whl", hash = "sha256:cbb791cdea2a72f23da6ac5b5269ab0a0d161e9ef0100e653b69049a7706d1ec"},
+    {file = "filelock-3.12.2.tar.gz", hash = "sha256:002740518d8aa59a26b0c76e10fb8c6e15eae825d34b6fdf670333fd7b938d81"},
 ]
 
 [package.extras]
@@ -863,18 +863,18 @@ test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.3.1)", "pytest-
 
 [[package]]
 name = "playwright"
-version = "1.34.0"
+version = "1.35.0"
 description = "A high-level API to automate web browsers"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "playwright-1.34.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:69bb9b3296e366a23a99277b4c7673cb54ce71a3f5d630f114f7701b61f98f25"},
-    {file = "playwright-1.34.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:402d946631c8458436e099d7731bbf54cf79c9e62e3acae0ea8421e72616926b"},
-    {file = "playwright-1.34.0-py3-none-macosx_11_0_universal2.whl", hash = "sha256:462251cda0fcbb273497d357dbe14b11e43ebceb0bac9b892beda041ff209aa9"},
-    {file = "playwright-1.34.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:a8ba124ea302596a03a66993cd500484fb255cbc10fe0757fa4d49f974267a80"},
-    {file = "playwright-1.34.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bf0cb6aac49d24335fe361868aea72b11f276a95e7809f1a5d1c69b4120c46ac"},
-    {file = "playwright-1.34.0-py3-none-win32.whl", hash = "sha256:c50fef189d87243cc09ae0feb8e417fbe434359ccbcc863fb19ba06d46d31c33"},
-    {file = "playwright-1.34.0-py3-none-win_amd64.whl", hash = "sha256:42e16c930e1e910461f4c551a72fc1b900f37124431bf2b6a6d9ddae70042db4"},
+    {file = "playwright-1.35.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:9eb7fdb7bb3f4e528e63641b83827531739c58a40c71d4ea0030321d3f04a742"},
+    {file = "playwright-1.35.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:444446b55bfb33ac62398f9f71a8fdb6cee1ceda3316d95db3c6419c51bca9be"},
+    {file = "playwright-1.35.0-py3-none-macosx_11_0_universal2.whl", hash = "sha256:4f486ea09940a35c08ec26f272bdcb6c1e043d400f3b9b924d541c5f4a7ed8f3"},
+    {file = "playwright-1.35.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:a29cd048b3eddaf116b154328bcb8e3f3a637753cbb926ae3ef5a5e694ed2d64"},
+    {file = "playwright-1.35.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bc1d0686bdb6d7c2ce75087a1d6c7820e3de65be893f8a5ec64455613e884b39"},
+    {file = "playwright-1.35.0-py3-none-win32.whl", hash = "sha256:188481e780166eae9a2215bb3a58043ae167f7cc963282c7b7d14ba53858451c"},
+    {file = "playwright-1.35.0-py3-none-win_amd64.whl", hash = "sha256:2df7cfaaca881fd065f68e1c72a8216679a5b096f2add60c8c7c9dc909fdf7ef"},
 ]
 
 [package.dependencies]
@@ -883,13 +883,13 @@ pyee = "9.0.4"
 
 [[package]]
 name = "pre-commit"
-version = "3.3.2"
+version = "3.3.3"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pre_commit-3.3.2-py2.py3-none-any.whl", hash = "sha256:8056bc52181efadf4aac792b1f4f255dfd2fb5a350ded7335d251a68561e8cb6"},
-    {file = "pre_commit-3.3.2.tar.gz", hash = "sha256:66e37bec2d882de1f17f88075047ef8962581f83c234ac08da21a0c58953d1f0"},
+    {file = "pre_commit-3.3.3-py2.py3-none-any.whl", hash = "sha256:10badb65d6a38caff29703362271d7dca483d01da88f9d7e05d0b97171c136cb"},
+    {file = "pre_commit-3.3.3.tar.gz", hash = "sha256:a2256f489cd913d575c145132ae196fe335da32d91a8294b7afe6622335dd023"},
 ]
 
 [package.dependencies]
@@ -1208,13 +1208,13 @@ user-agents = "*"
 
 [[package]]
 name = "service-identity"
-version = "21.1.0"
+version = "23.1.0"
 description = "Service identity verification for pyOpenSSL & cryptography."
 optional = false
-python-versions = "*"
+python-versions = ">=3.8"
 files = [
-    {file = "service-identity-21.1.0.tar.gz", hash = "sha256:6e6c6086ca271dc11b033d17c3a8bea9f24ebff920c587da090afc9519419d34"},
-    {file = "service_identity-21.1.0-py2.py3-none-any.whl", hash = "sha256:f0b0caac3d40627c3c04d7a51b6e06721857a0e10a8775f2d1d7e72901b3a7db"},
+    {file = "service_identity-23.1.0-py3-none-any.whl", hash = "sha256:87415a691d52fcad954a500cb81f424d0273f8e7e3ee7d766128f4575080f383"},
+    {file = "service_identity-23.1.0.tar.gz", hash = "sha256:ecb33cd96307755041e978ab14f8b14e13b40f1fbd525a4dc78f46d2b986431d"},
 ]
 
 [package.dependencies]
@@ -1222,12 +1222,12 @@ attrs = ">=19.1.0"
 cryptography = "*"
 pyasn1 = "*"
 pyasn1-modules = "*"
-six = "*"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "furo", "idna", "pyOpenSSL", "pytest", "sphinx"]
-docs = ["furo", "sphinx"]
+dev = ["pyopenssl", "service-identity[docs,idna,mypy,tests]"]
+docs = ["furo", "myst-parser", "pyopenssl", "sphinx", "sphinx-notfound-page"]
 idna = ["idna"]
+mypy = ["idna", "mypy", "types-pyopenssl"]
 tests = ["coverage[toml] (>=5.0.2)", "pytest"]
 
 [[package]]

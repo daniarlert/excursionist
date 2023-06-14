@@ -1,4 +1,5 @@
 import os
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 from excursionist.items import OfferItem
@@ -9,27 +10,32 @@ load_dotenv()
 
 
 def gen_url(
+    domain: str,
     origin_city: str,
     destination_city: str | None,
     travel_start_date: str,
     travel_end_date: str,
 ) -> str:
+    u = urlparse(domain)
     if not destination_city:
-        return f"https://www.kayak.com/explore/{origin_city}-anywhere/{travel_start_date.replace('-', '')},{travel_end_date.replace('-', '')}"
+        return f"https://{u.netloc}/explore/{origin_city}-anywhere/{travel_start_date.replace('-', '')},{travel_end_date.replace('-', '')}"
     else:
-        return f"https://www.kayak.com/flights/{origin_city}-{destination_city}/{travel_start_date}/{travel_end_date}"
+        return f"https://{u.netloc}/flights/{origin_city}-{destination_city}/{travel_start_date}/{travel_end_date}"
 
 
 class KayakExploreSpider(Spider):
     name = "kayak-explore"
-    allowed_domains = ["www.kayak.com"]
+    allowed_domains = []
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.kayak_domain = os.getenv("KAYAK_DOMAIN")
         self.origin_city = os.getenv("ORIGIN_CITY")
         self.travel_start_date = os.getenv("TRAVEL_START_DATE")
         self.travel_end_date = os.getenv("TRAVEL_END_DATE")
 
+        if not self.kayak_domain:
+            raise ValueError("KAYAK_DOMAIN is not specified.")
         if not self.origin_city:
             raise ValueError("ORIGIN_CITY is not set.")
         if not self.travel_start_date:
@@ -37,8 +43,11 @@ class KayakExploreSpider(Spider):
         if not self.travel_end_date:
             raise ValueError("TRAVEL_END_DATE is not set.")
 
+        self.allowed_domains += self.kayak_domain
+
     def start_requests(self):
         url = gen_url(
+            self.kayak_domain,
             self.origin_city,
             None,
             self.travel_start_date,
@@ -59,6 +68,11 @@ class KayakExploreSpider(Spider):
 
     async def parse(self, response):
         page = response.meta["playwright_page"]
+        await page.wait_for_timeout(1000)
+
+        consent_modal = await page.query_selector("div.iInN")
+        if consent_modal:
+            await page.click("div.iInN-footer > button")
 
         while True:
             load_more_button = await page.query_selector('button[id$="showMoreButton"]')
@@ -84,7 +98,7 @@ class KayakExploreSpider(Spider):
                 break  # Break while loop
             else:
                 await page.click('button[id$="showMoreButton"]')
-                await page.wait_for_timeout(1000)  # Adjust the delay if necessary
+                await page.wait_for_timeout(1000)
 
                 # Update the response object with the new HTML. Since we're not using the normal Scrapy
                 # flow, we need to do this manually.

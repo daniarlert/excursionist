@@ -8,21 +8,18 @@ from itemadapter import ItemAdapter
 class CleanPipeline:
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
-        adapter["price"] = self.clean_price(adapter["price"], adapter["travel_page"])
+        adapter["price"] = self.clean_price(adapter["price"])
         return item
 
     @staticmethod
-    def clean_price(price, travel_page):
-        if travel_page == "kayak":
-            return price.replace("from $", "")
-        elif travel_page == "skiplagged":
-            pattern = r">([^<>]+)<"
-            match = re.search(pattern, price)
-            if match:
-                price = match.group(1).strip().replace("€", "")
-                return price
-            else:
-                return price
+    def clean_price(raw_price):
+        pattern = r"\d+"
+        match = re.search(pattern, raw_price)
+
+        if match:
+            return match.group()
+
+        return 0
 
 
 class SaveToSqlitePipeline:
